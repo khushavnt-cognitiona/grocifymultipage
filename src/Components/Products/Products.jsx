@@ -39,21 +39,23 @@ const Products = () => {
         </div>
 
         {/* Product Listing */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
-          {filteredProducts.map((product) => (
-            <Card
-              key={product.id}
-              title={product.title}
-              price={product.price}
-              image={product.image}
-              description={product.description}
-              rating={product.rating}
-              reviews={product.reviews}
-              weight={product.weight}
-              origin={product.origin}
-            />
-          ))}
-        </div>
+        {/* Product Listing */}
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
+  {filteredProducts.map((product) => (
+    <Card
+      key={product.id}
+      title={product.title}
+      price={product.price}
+      image={product.image}
+      description={product.description}
+      rating={product.rating}
+      reviews={product.reviews}
+      weight={product.weight}
+      origin={product.origin}
+    />
+  ))}
+</div>
+
       </div>
     </section>
   );
