@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaStar, FaShoppingCart, FaHeart, FaTruck, FaShieldAlt, FaUndo, FaMinus, FaPlus, FaShareAlt } from "react-icons/fa";
 import ProductReviews from "../../Components/ProductReviews/ProductReviews";
+import RecentlyViewed from "../../Components/RecentlyViewed/RecentlyViewed";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -27,6 +28,26 @@ const ProductDetails = () => {
       "Farm fresh quality"
     ]
   };
+
+  // Save to Recently Viewed
+  React.useEffect(() => {
+    const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+    const newProduct = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      rating: product.rating
+    };
+    
+    // Remove if already exists to move it to the top
+    const filtered = recentlyViewed.filter(item => item.id !== newProduct.id);
+    
+    // Add to beginning
+    const updated = [newProduct, ...filtered].slice(0, 5); // Keep max 5
+    
+    localStorage.setItem('recentlyViewed', JSON.stringify(updated));
+  }, [product.id]);
 
   const handleAddToCart = () => {
     // Add to cart logic here
@@ -89,7 +110,22 @@ const ProductDetails = () => {
                     <span className="text-sm text-gray-500">({product.reviews} reviews)</span>
                   </div>
                 </div>
-                <button className="text-gray-400 hover:text-blue-500 transition-colors">
+                <button 
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({
+                        title: product.name,
+                        text: `Check out ${product.name} on Grocify!`,
+                        url: window.location.href,
+                      }).catch(console.error);
+                    } else {
+                      navigator.clipboard.writeText(window.location.href);
+                      alert('Link copied to clipboard!');
+                    }
+                  }}
+                  className="text-gray-400 hover:text-blue-500 transition-colors"
+                  title="Share Product"
+                >
                   <FaShareAlt className="text-xl" />
                 </button>
               </div>
@@ -174,6 +210,9 @@ const ProductDetails = () => {
 
         {/* Reviews Section */}
         <ProductReviews productId={product.id} />
+
+        {/* Recently Viewed Section */}
+        <RecentlyViewed />
 
       </div>
     </div>

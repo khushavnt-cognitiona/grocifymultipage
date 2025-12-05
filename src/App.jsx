@@ -19,6 +19,7 @@ import SettingsPage from './Pages/SettingsPage/SettingsPage';
 import RewardsPage from './Pages/RewardsPage/RewardsPage';
 
 import AIChatbot from './Components/AIChatbot/AIChatbot';
+import ScrollToTop from './Components/ScrollToTop/ScrollToTop';
 
 import OrderDetails from './Pages/OrderDetails/OrderDetails';
 
@@ -50,6 +51,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
+          <ScrollToTop />
           <AIChatbot />
           <Routes>
           {/* Public Routes */}

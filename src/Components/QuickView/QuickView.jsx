@@ -58,7 +58,23 @@ const QuickView = ({ product, isOpen, onClose }) => {
               </div>
 
               {/* Share Button */}
-              <button className="absolute top-4 right-4 bg-white text-gray-700 p-3 rounded-full shadow-lg hover:bg-orange-500 hover:text-white transition-all">
+              <button 
+                onClick={() => {
+                  const url = window.location.origin + `/product/${product.id}`;
+                  if (navigator.share) {
+                    navigator.share({
+                      title: product.title,
+                      text: `Check out ${product.title} on Grocify!`,
+                      url: url,
+                    }).catch(console.error);
+                  } else {
+                    navigator.clipboard.writeText(url);
+                    alert('Link copied to clipboard!');
+                  }
+                }}
+                className="absolute top-4 right-4 bg-white text-gray-700 p-3 rounded-full shadow-lg hover:bg-orange-500 hover:text-white transition-all"
+                title="Share Product"
+              >
                 <FaShare />
               </button>
             </div>
