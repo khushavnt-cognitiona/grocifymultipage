@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GoHeartFill } from "react-icons/go";
-import { FaShoppingBag, FaUser, FaBolt, FaBell, FaSignOutAlt, FaTachometerAlt, FaHeart, FaMapMarkerAlt, FaCreditCard, FaCog, FaChevronDown, FaBox, FaUsers } from "react-icons/fa";
+import { FaShoppingBag, FaUser, FaBolt, FaBell, FaSignOutAlt, FaTachometerAlt, FaHeart, FaMapMarkerAlt, FaCreditCard, FaCog, FaChevronDown, FaBox, FaUsers, FaMicrophone } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
 import { TbMenu2, TbX } from "react-icons/tb";
 import { useAuth } from "../../context/AuthContext";
@@ -118,18 +118,62 @@ const Navbaar = () => {
         <div className="hidden md:flex items-center gap-4 lg:gap-6">
 
           {/* Search bar */}
-          <form onSubmit={handleSearch} className="flex p-1 border-2 border-orange-500 rounded-full focus-within:ring-2 focus-within:ring-orange-400 transition-all hover:shadow-lg">
+          {/* Search bar */}
+          <form onSubmit={handleSearch} className="flex p-1 border-2 border-orange-500 rounded-full focus-within:ring-2 focus-within:ring-orange-400 transition-all hover:shadow-lg relative bg-white">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search products..."
               autoComplete="off"
-              className="flex-1 h-[5vh] px-3 focus:outline-none bg-transparent"
+              className="flex-1 h-[5vh] px-3 focus:outline-none bg-transparent rounded-l-full"
             />
+            
+            {/* Voice Search Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                  const recognition = new SpeechRecognition();
+                  recognition.lang = 'en-US';
+                  recognition.start();
+                  
+                  // Visual feedback could be added here (e.g., a listening state)
+                  const originalPlaceholder = document.querySelector('input[placeholder="Search products..."]').placeholder;
+                  document.querySelector('input[placeholder="Search products..."]').placeholder = "Listening...";
+
+                  recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    setSearchQuery(transcript);
+                    navigate(`/shop?search=${transcript}`);
+                    document.querySelector('input[placeholder="Search products..."]').placeholder = originalPlaceholder;
+                  };
+
+                  recognition.onerror = (event) => {
+                    console.error("Speech recognition error", event.error);
+                    document.querySelector('input[placeholder="Search products..."]').placeholder = "Error. Try again.";
+                    setTimeout(() => {
+                       document.querySelector('input[placeholder="Search products..."]').placeholder = originalPlaceholder;
+                    }, 2000);
+                  };
+                  
+                  recognition.onend = () => {
+                     document.querySelector('input[placeholder="Search products..."]').placeholder = originalPlaceholder;
+                  };
+                } else {
+                  alert("Voice search is not supported in this browser.");
+                }
+              }}
+              className="px-3 text-gray-500 hover:text-orange-600 transition-colors border-r border-gray-200"
+              title="Voice Search"
+            >
+              <FaMicrophone className="text-lg hover:scale-110 transition-transform" />
+            </button>
+
             <button 
               type="submit"
-              className="bg-gradient-to-b from-red-600 to-orange-800 text-white w-10 h-10 flex justify-center items-center rounded-full text-2xl hover:scale-110 transition-all duration-200 shadow-lg"
+              className="bg-gradient-to-b from-red-600 to-orange-800 text-white w-10 h-10 flex justify-center items-center rounded-full text-2xl hover:scale-110 transition-all duration-200 shadow-lg ml-1"
             >
               <IoMdSearch />
             </button>
