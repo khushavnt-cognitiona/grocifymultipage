@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Grocery from '../../assets/images/grocery.png';
 import Button from '../Button/Button';
 
@@ -29,10 +30,24 @@ const Hero = () => {
             Bred for a high content of beneficial substances, our products are all fresh and healthy.
           </p>
 
-          <Button
-            content="Shop Now"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300"
-          />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <Button
+              content="Shop Now"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300"
+            />
+            
+            <Link to="/shop">
+              <button className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300 font-semibold flex items-center gap-2">
+                ✨ Advanced Shop
+              </button>
+            </Link>
+
+            <Link to="/realtime">
+              <button className="bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300 font-semibold flex items-center gap-2 animate-pulse">
+                ⚡ Real-Time Dashboard
+              </button>
+            </Link>
+          </div>
         </div>
 
         {/* Hero Image */}

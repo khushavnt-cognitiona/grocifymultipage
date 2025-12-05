@@ -1,48 +1,58 @@
 import React from "react";
-import { FaPlus } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa6";
+import { FaPlus, FaHeart, FaStar } from "react-icons/fa";
 import Button from "../Button/Button";
 
-const Card = ({ title, price, image ,description  }) => {
+const Card = ({ title, price, image, description, rating, reviews, weight, origin }) => {
   return (
-    <div className="relative bg-white p-4 sm:p-5 rounded-2xl shadow-md hover:shadow-lg transition-all">
+    <div className="bg-white shadow-md rounded-xl p-4 relative hover:shadow-lg transition-all flex flex-col">
 
-      {/* Left + Icon */}
-      <div className="absolute top-3 left-3 bg-white shadow p-2 rounded-full cursor-pointer text-orange-500 hover:scale-110 transition">
-        <FaPlus size={16} />
+      {/* Heart Icon - Left Top */}
+      <button className="absolute top-3 left-3 text-red-500 text-xl">
+        <FaHeart />
+      </button>
+
+      {/* Plus Button - Right Top */}
+      <button className="absolute top-3 right-3 bg-orange-500 text-white p-2 rounded-full shadow">
+        <FaPlus />
+      </button>
+
+      {/* Image */}
+      <div className="flex justify-center my-4">
+        <img src={image} alt={title} className="w-32 h-32 object-contain" />
       </div>
 
-      {/* Right Heart Icon */}
-      <div className="absolute top-3 right-3 bg-white shadow p-2 rounded-full cursor-pointer text-red-500 hover:scale-110 transition">
-        <FaHeart size={16} />
-      </div>
+      {/* Content Center */}
+      <div className="text-center flex-1 flex flex-col items-center">
 
-      {/* Product Image */}
-      <div className="w-full flex justify-center mt-8 sm:mt-10">
-        <img
-          src={image}
-          alt={title}
-          className="w-24 h-24 sm:w-32 sm:h-32 object-contain"
-        />
-      </div>
+        <h3 className="text-xl font-semibold">{title}</h3>
 
-      {/* Content */}
-      <div className="text-center mt-4">
-        <h3 className="text-lg sm:text-xl font-semibold text-zinc-800">
-          {title}
-        </h3>
-        <p className=" text-base sm:text-lg mt-1">
+        {/* Rating */}
+        <div className="flex items-center gap-2 my-1 justify-center">
+          <FaStar className="text-yellow-500" />
+          <span className="font-medium">{rating}</span>
+          <span className="text-sm text-gray-500">({reviews} reviews)</span>
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-600 text-sm my-2">
           {description}
         </p>
 
-        <p className="text-orange-500 font-bold text-base sm:text-lg mt-1">
-          ${price}
-        </p>
+        {/* Extra Info */}
+        <p className="text-gray-500 text-sm">Weight: {weight}</p>
+        {origin && (
+          <p className="text-gray-500 text-sm">Origin: {origin}</p>
+        )}
 
-        <div className="flex justify-center mt-3 sm:mt-4">
-          <Button content="Shop Now" />
-        </div>
+        {/* Price */}
+        <p className="text-lg font-bold mt-2">${price}</p>
       </div>
+
+      {/* Button Always Bottom */}
+      <div className="mt-4 flex justify-center">
+        <Button content="Shop Now" />
+      </div>
+
     </div>
   );
 };
